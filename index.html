@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>أبطال كرة القدم | Soccer Champs</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--bg:#0a1f14;--bg2:#0e2a1b;--card:#122f20;--card2:#173d28;--line:#2a5a40;--gold:#f5c518;--green:#22c55e;--green2:#16a34a;--red:#ef4444;--blue:#38bdf8;--txt:#eef7f0;--muted:#9db8a8}
+body{background:radial-gradient(1200px 600px at 50% -10%,#1a5c38,#0a1f14 60%);color:var(--txt);font-family:"Segoe UI",Tahoma,Arial,sans-serif;min-height:100vh;display:flex;justify-content:center}
+#app{width:100%;max-width:520px;min-height:100vh;background:linear-gradient(180deg,#0e2a1b,#0a1f14);border-inline:1px solid var(--line);display:flex;flex-direction:column;position:relative}
+header{padding:12px 14px;display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.35);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#22c55e,#0ea5e9);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+header h1{font-size:17px;line-height:1.2}
+header small{color:var(--muted);font-size:12px}
+main{flex:1;padding:12px 12px 86px;overflow-y:auto}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:12px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.card h2{font-size:15px;margin-bottom:8px;color:var(--gold)}
+.card h3{font-size:14px;margin:8px 0 6px}
+.row{display:flex;gap:8px;align-items:center}
+.between{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.muted{color:var(--muted);font-size:12px}
+.btn{border:none;border-radius:12px;padding:11px 14px;font-size:14px;font-weight:700;cursor:pointer;color:#06210f;background:linear-gradient(180deg,#4ade80,#22c55e);box-shadow:0 4px 0 #14532d;transition:transform .05s}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.btn.gold{background:linear-gradient(180deg,#fde68a,#f5c518);box-shadow:0 4px 0 #92400e;color:#3b2503}
+.btn.blue{background:linear-gradient(180deg,#7dd3fc,#0ea5e9);box-shadow:0 4px 0 #0c4a6e;color:#06283a}
+.btn.red{background:linear-gradient(180deg,#fca5a5,#ef4444);box-shadow:0 4px 0 #7f1d1d;color:#fff}
+.btn.ghost{background:#0a1f14;color:var(--txt);border:1px solid var(--line);box-shadow:none}
+.btn.small{padding:7px 10px;font-size:12px;border-radius:10px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:#0a1f14;border:1px solid var(--line)}
+.pill.gold{border-color:var(--gold);color:var(--gold)}
+.pill.green{border-color:var(--green);color:#86efac}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{padding:7px 6px;text-align:center;border-bottom:1px solid rgba(255,255,255,.07)}
+th{color:var(--gold);font-size:11px}
+tr.me td{background:rgba(34,197,94,.14);font-weight:800}
+.club-pick{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.club{border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;cursor:pointer;background:#0c2517}
+.club.sel{outline:2px solid var(--gold);background:#153823}
+.club .e{font-size:30px}
+.club b{font-size:13px;display:block;margin:4px 0}
+.stars{color:var(--gold);font-size:12px;letter-spacing:1px}
+nav{position:fixed;bottom:0;width:100%;max-width:520px;background:rgba(6,18,11,.96);border-top:1px solid var(--line);display:flex;z-index:30;backdrop-filter:blur(8px)}
+nav button{flex:1;background:none;border:none;color:var(--muted);padding:9px 2px 10px;font-size:11px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button span.i{font-size:20px}
+nav button.on{color:var(--gold)}
+input,select{width:100%;padding:11px;border-radius:12px;border:1px solid var(--line);background:#08170f;color:var(--txt);font-size:14px;font-family:inherit}
+.badge{width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:18px;background:#0a1f14;border:1px solid var(--line);flex-shrink:0}
+.pname{font-size:13px;font-weight:700}
+.prow{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid rgba(255,255,255,.07);border-radius:12px;margin-bottom:6px;background:rgba(0,0,0,.2)}
+.rate{min-width:38px;text-align:center;font-weight:800;background:#0a1f14;border:1px solid var(--gold);border-radius:8px;padding:4px 6px;color:var(--gold)}
+.bar{height:6px;background:#00000055;border-radius:4px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#a3e635)}
+#matchWrap canvas{width:100%;border-radius:14px;background:#15803d;touch-action:none;display:block;border:1px solid var(--line)}
+.hud{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.swipe-hint{background:#fef9c3;color:#713f12;border-radius:10px;padding:8px;font-size:12px;font-weight:700;margin-bottom:8px;border:1px dashed #a16207}
+.trophy{font-size:28px}
+.kbd{background:#000;padding:2px 7px;border-radius:6px;border:1px solid #444;font-size:11px}
+@media(min-width:560px){nav{border-inline:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+<div class="logo">⚽</div>
+<div><h1>أبطال كرة القدم</h1><small>Soccer Champs • نسخة عربية • تعمل بدون إنترنت</small></div>
+<div style="margin-inline-start:auto" class="row"><span id="seasonPill" class="pill gold">الموسم 1</span></div>
+</header>
+<main id="main"></main>
+<nav id="nav" style="display:none">
+<button data-t="home"><span class="i">🏠</span>الرئيسية</button>
+<button data-t="match"><span class="i">⚽</span>المباراة</button>
+<button data-t="squad"><span class="i">👥</span>الفريق</button>
+<button data-t="transfers"><span class="i">💰</span>انتقالات</button>
+<button data-t="league"><span class="i">🏆</span>الدوري</button>
+</nav>
+</div>
+<script>
+"use strict";
+/* ============ بيانات ============ */
+const FIRST=["محمد","أحمد","يوسف","عمر","خالد","سعد","فهد","علي","حسن","إبراهيم","كريم","طارق","وليد","سامي","ناصر","ماجد","رامي","بدر","طلال","زياد","أنس","حمزة","بلال","سفيان","رياض","مهدي","أمين","ياسين","عبد الله","مصطفى"];
+const LAST=["الحريري","القحطاني","الدوسري","العبسي","النجار","حمدان","الشريف","العمري","الزهراني","الغامدي","بن علي","التركي","المصري","السيد","بركات","الخطيب","زيدان","صلاح","محرز","حكيمي","البرناوي","العتيبي","الشامسي","الكعبي","الدباغ","الجبوري","التميمي","الهاشمي","العبيدي","فرحات"];
+const CLUBS=[
+{id:"falcons",name:"الصقور الملكية",e:"🦅",att:86,mid:84,def:85,budget:120},
+{id:"capital",name:"نجوم العاصمة",e:"⭐",att:84,mid:83,def:82,budget:95},
+{id:"ocean",name:"أمواج الساحل",e:"🌊",att:80,mid:81,def:79,budget:70},
+{id:"desert",name:"صقور الصحراء",e:"🏜️",att:78,mid:79,def:80,budget:60},
+{id:"volcano",name:"بركان الجنوب",e:"🌋",att:77,mid:76,def:75,budget:45},
+{id:"lions",name:"أسود الأطلس",e:"🦁",att:82,mid:80,def:81,budget:80},
+{id:"eagles",name:"نسور الشمال",e:"� eagle".slice(0,2)+"🦅",att:75,mid:74,def:76,budget:38},
+{id:"sharks",name:"قروش الخليج",e:"🦈",att:73,mid:75,def:72,budget:30},
+];
+CLUBS[6].e="🦅";
+const MARKET_NAMES=()=>FIRST[Math.floor(Math.random()*FIRST.length)]+" "+LAST[Math.floor(Math.random()*LAST.length)];
+const rnd=(a,b)=>Math.floor(a+Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const K="ws_champs_ar_v1";
+let S=null, TAB="home";
+
+/* ============ أدوات حالة ============ */
+function clubById(id){return CLUBS.find(c=>c.id===id);}
+function teamRating(t){return Math.round((t.att+t.mid+t.def)/3);}
+function squadAvg(sq){if(!sq.length)return 75;return Math.round(sq.reduce((a,p)=>a+p.rating,0)/sq.length);}
+function playerValue(p){const r=p.rating-58;return Math.max(1,Math.round(r*r*0.09 + p.age<23?8:0));}
+function save(){localStorage.setItem(K,JSON.stringify(S));}
+function load(){try{const v=localStorage.getItem(K);if(v){S=JSON.parse(v);return true;}}catch(e){}return false;}
+function wage(p){return Math.max(1,Math.round((p.rating-60)*0.35));}
+
+function genSquad(base){
+  const sq=[];const posList=["GK","DEF","DEF","DEF","DEF","MID","MID","MID","MID","ATT","ATT","ATT","DEF","MID","ATT","GK","MID","DEF"];
+  posList.forEach((pos,i)=>{
+    const rating=Math.max(58,Math.min(90,base+rnd(-9,7)+(pos==="ATT"?2:0)));
+    sq.push({id:"p"+Date.now()+i+rnd(1,9999),name:MARKET_NAMES(),pos,age:rnd(18,34),rating,goals:0,tired:0});
+  });
+  return sq;
+}
+function genMarket(n,base){
+  const arr=[];
+  for(let i=0;i<n;i++){const rating=Math.max(62,Math.min(91,base+rnd(-6,9)));const pos=pick(["GK","DEF","MID","ATT","ATT","MID"]);arr.push({id:"m"+Date.now()+i+rnd(1,99999),name:MARKET_NAMES(),pos,age:rnd(17,32),rating});}
+  return arr;
+}
+function roundRobin(ids){
+  // ids 8 -> 7 rounds first leg
+  const arr=[...ids];const n=arr.length;const rounds=[];
+  for(let r=0;r<n-1;r++){const pairs=[];for(let i=0;i<n/2;i++){const a=arr[i],b=arr[n-1-i];pairs.push(r%2?{h:a,a:b}:{h:b,a:a});}rounds.push(pairs);arr.splice(1,0,arr.pop());}
+  const second=rounds.map(rd=>rd.map(m=>({h:m.a,a:m.h})));
+  return [...rounds,...second];
+}
+function newSeasonState(clubId,coach,carry){
+  const ids=CLUBS.map(c=>c.id);
+  const fixtures=roundRobin(ids);
+  const table={};ids.forEach(id=>table[id]={p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0});
+  const st={
+    coach,myClub:clubId,season:carry?carry.season+1:1,round:0,
+    fixtures,table,scorers:{},trophies:carry?carry.trophies:[],
+    budget:carry?carry.budget:clubById(clubId).budget,
+    morale:70,fans:carry?carry.fans||50000:50000,
+    squad:carry?carry.squad:null,market:[],cup:null,cupLog:[],
+    trainedRound:-1,history:[],champ:null,finished:false,offers:[]
+  };
+  if(!st.squad){st.squad=genSquad(teamRating(clubById(clubId)));}
+  else{
+    // aging / retire / wonderkid
+    st.squad.forEach(p=>{p.age++;p.goals=0;p.tired=0;if(p.age>32&&Math.random()<.3)p.rating=Math.max(60,p.rating-2);});
+    st.squad=st.squad.filter(p=>!(p.age>=36&&Math.random()<.5));
+    while(st.squad.length<18){const r=squadAvg(st.squad);st.squad.push({id:"y"+Date.now()+rnd(1,99999),name:MARKET_NAMES()+" ✦",pos:pick(["DEF","MID","ATT"]),age:rnd(17,19),rating:Math.max(64,r+rnd(-6,6)),goals:0,tired:0});}
+    st.budget+=25; // sponsor
+  }
+  st.market=genMarket(6,squadAvg(st.squad));
+  // cup QF draw
+  const shuffled=[...ids].sort(()=>Math.random()-.5);
+  st.cup={round:"QF",ties:[{h:shuffled[0],a:shuffled[1]},{h:shuffled[2],a:shuffled[3]},{h:shuffled[4],a:shuffled[5]},{h:shuffled[6],a:shuffled[7]}],played:{}};
+  return st;
+}
+function myAttack(){const a=S.squad.filter(p=>p.pos==="ATT");const m=S.squad.filter(p=>p.pos==="MID");return Math.round((avg(a)+avg(m))/2);}
+function myDef(){const d=S.squad.filter(p=>p.pos==="DEF");const g=S.squad.filter(p=>p.pos==="GK");return Math.round((avg(d)*2+avg(g))/3);}
+function avg(arr){if(!arr.length)return 75;return Math.round(arr.reduce((x,p)=>x+p.rating,0)/arr.length);}
+function oppStrength(id){const c=clubById(id);return {att:c.att,def:c.def,mid:c.mid};}
+function simGoals(att,def){let x=1.25+(att-def)*0.09+(Math.random()*1.4-0.5);x=Math.max(0,x);let g=0;while(Math.random()<x/2.2&&g<6){g++;x-=1.1;}if(Math.random()<x%1)g++;return Math.min(6,g);}
+function addScorer(clubId,goals,mySquad){
+  for(let i=0;i<goals;i++){
+    if(clubId===S.myClub){const cands=mySquad.filter(p=>p.pos!=="GK"&&p.pos!=="DEF"||Math.random()<.15);const p=cands.length?pick(cands):pick(mySquad);p.goals++;const k="⭐ "+p.name;S.scorers[k]=S.scorers[k]||{n:k,g:0,c:clubId};S.scorers[k].g++;}
+    else{const k=clubById(clubId).e+" "+pick(FIRST)+" "+pick(LAST);S.scorers[k]=S.scorers[k]||{n:k,g:0,c:clubId};S.scorers[k].g++;}
+  }
+}
+function applyResult(h,a,gh,ga){
+  const T=S.table;T[h].p++;T[a].p++;T[h].gf+=gh;T[h].ga+=ga;T[a].gf+=ga;T[a].ga+=gh;
+  if(gh>ga){T[h].w++;T[a].l++;T[h].pts+=3;}else if(gh<ga){T[a].w++;T[h].l++;T[a].pts+=3;}else{T[h].d++;T[a].d++;T[h].pts++;T[a].pts++;}
+}
+function sortedTable(){return Object.entries(S.table).sort((x,y)=>y[1].pts-x[1].pts||(y[1].gf-y[1].ga)-(x[1].gf-x[1].ga)||y[1].gf-x[1].gf);}
+
+/* ============ صوت ============ */
+let AC=null;
+function beep(f,d,type){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=type||"sine";o.frequency.value=f;g.gain.value=.18;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.stop(AC.currentTime+d);}catch(e){}}
+function goalSound(){beep(523,.15,"square");setTimeout(()=>beep(659,.15,"square"),120);setTimeout(()=>beep(784,.35,"square"),240);}
+function whistle(){beep(2200,.4,"sine");}
+
+/* ============ واجهات ============ */
+const el=document.getElementById("main"),nav=document.getElementById("nav");
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{TAB=b.dataset.t;render();});
+function setNav() {[...nav.querySelectorAll("button")].forEach(b=>b.classList.toggle("on",b.dataset.t===TAB));}
+function money(n){return n+"M€";}
+function clubLine(id){const c=clubById(id);return `${c.e} ${c.name}`;}
+
+function render(){
+  document.getElementById("seasonPill").textContent="الموسم "+(S?S.season:1);
+  if(!S){renderWelcome();nav.style.display="none";return;}
+  nav.style.display="flex";setNav();
+  if(TAB==="home")renderHome();
+  else if(TAB==="match")renderMatch();
+  else if(TAB==="squad")renderSquad();
+  else if(TAB==="transfers")renderTransfers();
+  else renderLeague();
+}
+function renderWelcome(){
+  el.innerHTML=`
+  <div class="card" style="text-align:center">
+    <div style="font-size:64px">⚽🏆</div>
+    <h2 style="font-size:20px">أبطال كرة القدم</h2>
+    <p class="muted">إدارة + لحظات حاسمة تلعبها بنفسك بالسحب — مثل Soccer Champs</p>
+    <div style="height:8px"></div>
+    <h3 style="text-align:start">✍️ اسم المدرب</h3>
+    <input id="coach" placeholder="مثال: الكابتن سامي" value="">
+    <h3 style="text-align:start;margin-top:10px">🛡️ اختر ناديك (8 أندية)</h3>
+    <div class="club-pick" id="picks"></div>
+    <div style="height:10px"></div>
+    <div class="row">
+      <button class="btn gold" id="start" style="flex:1">🚀 ابدأ المسيرة</button>
+      <button class="btn ghost" id="cont" style="display:${load()?"":"none"}">📂 متابعة؟ امسح أولاً</button>
+    </div>
+    <p class="muted" style="margin-top:8px">🎮 داخل الملعب: اسحب بسرعة للتسديد/التمرير • أو استخدم الأزرار • الأسهم/WASD للتحرك</p>
+  </div>
+  <div class="card"><h2>🌟 المزايا</h2>
+  <div class="muted" style="line-height:2">🏟️ دوري 14 جولة + كأس خروج مغلوب<br>⚡ 4 لحظات حاسمة تلعبها كل مباراة<br>💰 سوق انتقالات حي + تدريب + معنويات<br>🏆 ألقاب وعروض أندية ومواسم لا نهائية<br>💾 حفظ تلقائي بدون إنترنت</div></div>`;
+  const picks=document.getElementById("picks");let sel=CLUBS[0].id;
+  function draw(){picks.innerHTML=CLUBS.map(c=>`<div class="club ${c.id===sel?"sel":""}" data-id="${c.id}"><div class="e">${c.e}</div><b>${c.name}</b><div class="stars">${"★".repeat(Math.round(teamRating(c)/18))} ${teamRating(c)}</div><div class="muted">${money(c.budget)}</div></div>`).join("");
+    picks.querySelectorAll(".club").forEach(d=>d.onclick=()=>{sel=d.dataset.id;draw();beep(600,.08);});}
+  draw();
+  document.getElementById("start").onclick=()=>{
+    const coach=document.getElementById("coach").value.trim()||"المدرب";
+    S=newSeasonState(sel,coach,null);save();TAB="home";render();whistle();
+  };
+}
+function nextMyFixture(){
+  if(S.round>=S.fixtures.length)return null;
+  return S.fixtures[S.round].find(m=>m.h===S.myClub||m.a===S.myClub);
+}
+function renderHome(){
+  const me=S.table[S.myClub];const f=nextMyFixture();
+  const rank=sortedTable().findIndex(x=>x[0]===S.myClub)+1;
+  const myTie=S.cup?Object.values(S.cup.ties).flat().find(t=>t&&(t.h===S.myClub||t.a===S.myClub))&&cupTieMine():null;
+  const att=myAttack(),df=myDef();
+  el.innerHTML=`
+  <div class="card between"><div><div class="muted">المدرب ${S.coach}</div><div style="font-size:18px;font-weight:800">${clubLine(S.myClub)}</div><div class="muted">المركز ${rank} • ${me.pts} نقطة • معنويات ${S.morale}%</div></div><div style="font-size:44px">${clubById(S.myClub).e}</div></div>
+  <div class="grid2">
+    <div class="card"><div class="muted">💰 الميزانية</div><b style="font-size:18px;color:var(--gold)">${money(S.budget)}</b><div class="muted">هجوم ${att} • دفاع ${df}</div></div>
+    <div class="card"><div class="muted">👥 المشجعون</div><b style="font-size:18px">${S.fans.toLocaleString("ar")}</b><div class="muted">🏆 ألقاب: ${S.trophies.length}</div></div>
+  </div>
+  <div class="card"><h2>📅 المباراة القادمة — الجولة ${Math.min(S.round+1,S.fixtures.length)}/${S.fixtures.length}</h2>
+  ${f?`<div class="between" style="font-size:16px;font-weight:800"><span>${clubLine(f.h)}</span><span class="pill gold">VS</span><span>${clubLine(f.a)}</span></div>
+  <div class="muted" style="margin:6px 0">${f.h===S.myClub?"🏠 على أرضك":"✈️ خارج أرضك"} • قوة الخصم ${teamRating(clubById(f.h===S.myClub?f.a:f.h))}</div>
+  <div class="row"><button class="btn" style="flex:1" onclick="goMatch()">⚽ العب اللحظات الحاسمة</button><button class="btn ghost" onclick="quickSim()">⏩ محاكاة</button></div>`
+  :`<p>🏁 انتهى الدوري! اذهب لتبويب الدوري لإنهاء الموسم.</p><button class="btn gold" onclick="TAB='league';render()">🏆 النتائج النهائية</button>`}
+  </div>
+  ${S.cup?`<div class="card"><h2>🏆 الكأس — ${cupRoundName(S.cup.round)}</h2><div class="muted">${S.cup.ties.map(t=>clubLine(t.h)+" 🆚 "+clubLine(t.a)).join("<br>")}</div></div>`:""}
+  <div class="card"><h2>📊 الترتيب (Top 5)</h2><table>${sortedTable().slice(0,5).map(([id,t],i)=>`<tr class="${id===S.myClub?"me":""}"><td>${i+1}</td><td>${clubLine(id)}</td><td>${t.pts}</td><td>${t.w}W</td><td>${t.gf}:${t.ga}</td></tr>`).join("")}</table></div>`;
+}
+function cupRoundName(r){return r==="QF"?"ربع النهائي":r==="SF"?"نصف النهائي":r==="F"?"النهائي":"انتهت";}
+function cupTieMine(){
+  if(!S.cup)return null;
+  const t=S.cup.ties.find(t=>t.h===S.myClub||t.a===S.myClub);
+  return t||null;
+}
+window.goMatch=()=>{TAB="match";render();};
+window.quickSim=()=>{simulateRound(true);};
+
+/* ---- تبويب المباراة ---- */
+function renderMatch(){
+  const f=nextMyFixture();
+  if(!f){el.innerHTML=`<div class="card"><h2>🏁 لا مباريات متبقية</h2><button class="btn gold" onclick="TAB='league';render()">عرض الختام</button></div>`;return;}
+  const opp=f.h===S.myClub?f.a:f.h;const oc=clubById(opp);
+  el.innerHTML=`
+  <div class="card" style="text-align:center"><div class="muted">الجولة ${S.round+1}</div>
+  <div class="between" style="font-size:17px;font-weight:800"><span>${clubLine(f.h)}</span><span class="pill gold">VS</span><span>${clubLine(f.a)}</span></div>
+  <div class="muted">أنت ${f.h===S.myClub?"المستضيف 🏠":"الضيف ✈️"} • الخصم ${oc.e} قوة ${teamRating(oc)}</div></div>
+  <div class="card"><h2>🎮 كيف تلعب؟</h2>
+  <div class="swipe-hint">👆 اسحب بإصبعك/الفأرة بسرعة باتجاه الزميل للتمرير، وباتجاه المرمى بقوة للتسديد. السحب البطيء = تحريك اللاعب. أو استخدم الأزرار ⬇️</div>
+  <div class="row"><button class="btn" style="flex:1" onclick="startMoments()">▶️ العب 4 هجمات حاسمة</button></div>
+  <div style="height:8px"></div><div class="row"><button class="btn blue" style="flex:1" onclick="quickSim()">⏩ محاكاة تلقائية</button></div></div>
+  <div id="matchWrap"></div>`;
+}
+window.startMoments=()=>{
+  const f=nextMyFixture();const opp=f.h===S.myClub?f.a:f.h;
+  const wrap=document.getElementById("matchWrap");
+  wrap.innerHTML=`<div class="card"><h2>⚡ الهجمة <span id="mNum">1</span>/4 • أهدافك <span id="mGoals">0</span></h2>
+  <div class="hud"><span class="pill" id="mTime">30</span><span class="pill green" id="mMsg">راوغ وسدد!</span></div>
+  <canvas id="cv" width="440" height="640"></canvas>
+  <div class="row" style="margin-top:8px"><button class="btn small blue" id="bPass" style="flex:1">🎯 تمرير (مسافة)</button><button class="btn small gold" id="bShoot" style="flex:1">🥅 تسديد (S)</button><button class="btn small red" id="bBurst" style="flex:1">💨 انطلاقة</button></div>
+  <div class="muted" style="margin-top:6px">تحكم: <span class="kbd">WASD/أسهم</span> تحرك • <span class="kbd">مسافة</span> تمرير • <span class="kbd">S</span> تسديد • أو السحب على الملعب</div></div>`;
+  playMatchMoments(f,opp,wrap);
+};
+
+/* ---- محرك اللحظات ---- */
+function playMatchMoments(fixture,oppId,wrap){
+  whistle();
+  let moment=0,myGoals=0;const TOTAL=4;
+  const oc=oppStrength(oppId);
+  const myAtt=myAttack(),myD=myDef();
+  function next(){
+    moment++;
+    if(moment>TOTAL){finishMatch();return;}
+    wrap.querySelector("#mNum").textContent=moment;
+    runOneMoment(wrap,myAtt,oc,(scored)=>{if(scored){myGoals++;goalSound();}wrap.querySelector("#mGoals").textContent=myGoals;setTimeout(next,900);});
+  }
+  function finishMatch(){
+    const oppGoals=simGoals(oc.att,myD);
+    const home=fixture.h===S.myClub;const gh=home?myGoals:oppGoals,ga=home?oppGoals:myGoals;
+    applyResult(fixture.h,fixture.a,gh,ga);
+    addScorer(S.myClub,myGoals,S.squad);addScorer(oppId,oppGoals,null);
+    // cup?
+    let cupTxt="";
+    const tie=cupTieMine();
+    if(tie&&(S.round===3||S.round===8||S.round===12)){
+      const mg=myGoals,og=oppGoals;let winner=mg===og?(myAtt+Math.random()*10>oc.att?"mine":"opp"):(mg>og?"mine":"opp");
+      cupTxt=winner==="mine"?"🏆 تأهلت في الكأس!":"❌ خرجت من الكأس.";
+      advanceCup(winner==="mine"?S.myClub:oppId,tie);
+    }
+    // other fixtures
+    S.fixtures[S.round].forEach(m=>{if(m===fixture)return;const hc=clubById(m.h),ac=clubById(m.a);const x=simGoals(hc.att,ac.def),y=simGoals(ac.att,hc.def);applyResult(m.h,m.a,x,y);addScorer(m.h,x,null);addScorer(m.a,y,null);});
+    S.round++;S.morale=Math.max(20,Math.min(99,S.morale+(myGoals>oppGoals?8:myGoals===oppGoals?0:-8)));
+    S.fans+=myGoals>oppGoals?rnd(800,2500):200;S.budget+=myGoals>oppGoals?6:myGoals===oppGoals?2:0;
+    S.squad.forEach(p=>{if(Math.random()<.3&&p.rating<93&&myGoals>oppGoals)p.rating+=0;});
+    S.market=genMarket(6,squadAvg(S.squad));save();
+    const win=myGoals>oppGoals?"🎉 فوز رائع!":myGoals===oppGoals?"🤝 تعادل":"😞 خسارة";
+    wrap.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:50px">${myGoals>oppGoals?"🎉":"⚽"}</div><h2>${win}</h2><div style="font-size:26px;font-weight:800">${clubLine(fixture.h)} ${gh} - ${ga} ${clubLine(fixture.a)}</div><div class="muted">أهدافك في اللحظات: ${myGoals} • أهداف الخصم (محاكاة): ${oppGoals}<br>${cupTxt}</div><div style="height:8px"></div><div class="row"><button class="btn" style="flex:1" onclick="TAB='home';render()">➡️ التالي</button></div></div>`;
+    whistle();
+  }
+  next();
+}
+window.quickSim=window.quickSim||(()=>{});
+window.quickSim=function(){
+  const f=nextMyFixture();if(!f)return;
+  const opp=f.h===S.myClub?f.a:f.h;const oc=oppStrength(opp);
+  const home=f.h===S.myClub;const mg=simGoals(myAttack(),oc.def),og=simGoals(oc.att,myDef());
+  const gh=home?mg:og,ga=home?og:mg;
+  applyResult(f.h,f.a,gh,ga);addScorer(S.myClub,mg,S.squad);addScorer(opp,og,null);
+  const tie=cupTieMine();
+  if(tie&&(S.round===3||S.round===8||S.round===12)){const winner=mg===og?(Math.random()<.5?S.myClub:opp):(mg>og?S.myClub:opp);advanceCup(winner,tie);}
+  S.fixtures[S.round].forEach(m=>{if(m===f)return;const hc=clubById(m.h),ac=clubById(m.a);const x=simGoals(hc.att,ac.def),y=simGoals(ac.att,hc.def);applyResult(m.h,m.a,x,y);addScorer(m.h,x,null);addScorer(m.a,y,null);});
+  S.round++;S.morale=Math.max(20,Math.min(99,S.morale+(mg>og?8:mg===og?0:-8)));S.budget+=mg>og?6:mg===og?2:0;S.fans+=mg>og?1500:300;
+  S.market=genMarket(6,squadAvg(S.squad));save();whistle();render();
+};
+function simulateRound(){window.quickSim();}
+function advanceCup(winner,tie){
+  S.cupLog.push(`${cupRoundName(S.cup.round)}: ${clubLine(tie.h)} vs ${clubLine(tie.a)} → تأهل ${clubLine(winner)}`);
+  const winners=S.cup.playedWinners||[];winners.push(winner);S.cup.playedWinners=winners;
+  S.cup.ties=S.cup.ties.filter(t=>t!==tie);
+  if(S.cup.ties.length===0){
+    if(S.cup.round==="QF"&&winners.length>=4){const w=[...winners].sort(()=>Math.random()-.5);S.cup={round:"SF",ties:[{h:w[0],a:w[1]},{h:w[2],a:w[3]}],played:{}};}
+    else if(S.cup.round==="SF"){const w=[...winners].sort(()=>Math.random()-.5);
+      // simulate other SF if needed
+      if(w.length===1){const others=CLUBS.map(c=>c.id).filter(id=>id!==S.myClub&&!S.cupLog.join("").includes(id)).slice(0,1);w.push(others[0]||"lions");}
+      S.cup={round:"F",ties:[{h:w[0],a:w[1]}],played:{}};}
+    else if(S.cup.round==="F"){
+      if(winner===S.myClub){S.trophies.push({s:S.season,t:"🏆 الكأس",club:S.myClub});S.budget+=30;S.morale=95;}
+      S.cup=null;
+    }
+  }
+  // auto-sim other cup ties same stage
+  if(S.cup&&S.cup.round!=="F"&&S.round>=0){
+    // leave rest for later rounds simulation simplicity
+  }
+}
+
+function runOneMoment(wrap,myAtt,oc,onEnd){
+  const cv=wrap.querySelector("#cv"),ctx=cv.getContext("2d");
+  const W=440,H=640,GOAL_W=130,GX=(W-GOAL_W)/2;
+  const msg=wrap.querySelector("#mMsg"),timeEl=wrap.querySelector("#mTime");
+  // entities
+  const holder0={x:W/2+rnd(-40,40),y:H-140,vx:0,vy:0,team:0,r:11,rating:myAtt,speed:3.1,burst:0};
+  const mates=[{x:90,y:H-260},{x:W-90,y:H-260},{x:W/2,y:H-330}].map(p=>({...p,vx:0,vy:0,team:0,r:10,rating:myAtt,speed:2.6}));
+  const defs=[{x:W/2-70,y:300},{x:W/2+70,y:300},{x:110,y:200},{x:W-110,y:200}].map((p,i)=>({...p,vx:0,vy:0,team:1,r:10,rating:oc.def,speed:2.3+i*0.08}));
+  const gk={x:W/2,y:46,vx:0,vy:0,team:1,r:12,rating:oc.def,gk:true,speed:3.2};
+  let ball={x:holder0.x,y:holder0.y-14,vx:0,vy:0,holder:"me"};
+  let players=[holder0,...mates];let done=false,t=30;
+  const keys={};
+  const kd=e=>{keys[e.key.toLowerCase()]=true;if([" ","arrowup","arrowdown","arrowleft","arrowright"].includes(e.key.toLowerCase()))e.preventDefault();if(e.key===" "){doPass();}if(e.key.toLowerCase()==="s"||e.key==="Enter"){doShoot();}};
+  const ku=e=>{keys[e.key.toLowerCase()]=false;};
+  window.addEventListener("keydown",kd);window.addEventListener("keyup",ku);
+  // pointer swipe
+  let pDown=null,pLast=null,pTrail=[];
+  cv.onpointerdown=e=>{const r=cv.getBoundingClientRect();pDown={x:(e.clientX-r.left)*440/r.width,y:(e.clientY-r.top)*640/r.height,t:performance.now()};pTrail=[pDown];cv.setPointerCapture(e.pointerId);};
+  cv.onpointermove=e=>{if(!pDown)return;const r=cv.getBoundingClientRect();pLast={x:(e.clientX-r.left)*440/r.width,y:(e.clientY-r.top)*640/r.height,t:performance.now()};pTrail.push(pLast);if(pTrail.length>12)pTrail.shift();};
+  cv.onpointerup=e=>{
+    if(!pDown){return;}
+    const r=cv.getBoundingClientRect();const up={x:(e.clientX-r.left)*440/r.width,y:(e.clientY-r.top)*640/r.height,t:performance.now()};
+    const dx=up.x-pDown.x,dy=up.y-pDown.y,dt=Math.max(1,up.t-pDown.t),dist=Math.hypot(dx,dy),sp=dist/dt;
+    pDown=null;
+    if(dist>55&&sp>0.35){ // flick = kick
+      const ang=Math.atan2(dy,dx);
+      // toward goal (up = -y) and strong => shoot else pass
+      if(dy<-30&&sp>0.55)doShoot(ang);else doPass(ang);
+      beep(300,.07,"square");
+    }
+  };
+  wrap.querySelector("#bPass").onclick=()=>doPass();
+  wrap.querySelector("#bShoot").onclick=()=>doShoot();
+  wrap.querySelector("#bBurst").onclick=()=>{holder0.burst=40;beep(900,.1,"sawtooth");};
+  function nearestMate(dirAng){
+    let best=null,bs=-2;
+    mates.forEach(m=>{const a=Math.atan2(m.y-holder0.y,m.x-holder0.x);let d=Math.abs(a-(dirAng??-Math.PI/2));if(d>Math.PI)d=2*Math.PI-d;const score=Math.cos(d);if(score>bs){bs=score;best=m;}});
+    return best;
+  }
+  function doPass(ang){
+    if(done||ball.holder!=="me")return;
+    const t=ang!==undefined?nearestMate(ang):nearestMate(-Math.PI/2+ (Math.random()-.5));
+    if(!t)return;ball.holder=null;
+    const lead=0.55;const tx=t.x+t.vx*22*lead,ty=t.y+t.vy*22*lead-30;
+    const a=Math.atan2(ty-ball.y,tx-ball.x);ball.vx=Math.cos(a)*9;ball.vy=Math.sin(a)*9;ball.passTo=t;beep(500,.08);
+    msg.textContent="🎯 تمريرة!";
+  }
+  function doShoot(ang){
+    if(done||ball.holder!=="me")return;
+    ball.holder=null;
+    const aimX=ang!==undefined?ball.x+Math.cos(ang)*200:W/2+rnd(-55,55);
+    const tx=Math.max(GX+8,Math.min(GX+GOAL_W-8,aimX));
+    const a=Math.atan2(30-ball.y,tx-ball.x);
+    const dist=Math.hypot(tx-ball.x,30-ball.y);
+    const err=(100-myAtt)*0.09+dist*0.008;
+    const aa=a+(Math.random()-.5)*err;
+    const pow=11+Math.random()*4+holder0.burst*0.02;
+    ball.vx=Math.cos(aa)*pow;ball.vy=Math.sin(aa)*pow;ball.shot=true;beep(200,.15,"sawtooth");
+    msg.textContent="🥅 تسديدة!!";
+  }
+  let raf,lastT=performance.now();
+  const t0=Date.now();
+  function loop(now){
+    if(done)return;
+    const dt=Math.min(33,now-lastT);lastT=now;const k=dt/16.6;
+    t=30-(Date.now()-t0)/1000;timeEl.textContent=Math.max(0,Math.ceil(t));
+    if(t<=0)return end(false,"⏱️ انتهى الوقت");
+    // move holder
+    let mx=0,my=0;
+    if(keys["a"]||keys["arrowleft"])mx-=1;if(keys["d"]||keys["arrowright"])mx+=1;
+    if(keys["w"]||keys["arrowup"])my-=1;if(keys["s"]&&false)my+=0;if(keys["arrowdown"]||keys["s"]&&keys["shift"])my+=1;
+    // note: S conflicts shoot, use arrows/WAD only; down = s? keep arrowdown
+    if(keys["arrowdown"])my+=1;
+    // pointer hold move toward last pointer (if slow drag)
+    if(pDown&&pLast){const dx=pLast.x-holder0.x,dy=pLast.y-holder0.y,d=Math.hypot(dx,dy);if(d>18){mx=dx/d;my=dy/d;}}
+    // joystick fallback: normalize
+    const ml=Math.hypot(mx,my);if(ml>0){mx/=ml;my/=ml;}
+    // W key down conflict: keys['s'] used shoot on keydown only, movement down via arrowdown. also allow 'x' down
+    if(keys["x"])my+=0;
+    const sp=holder0.burst>0?4.6:3.1;if(holder0.burst>0)holder0.burst-=k;
+    holder0.x=Math.max(14,Math.min(W-14,holder0.x+mx*sp*k));
+    holder0.y=Math.max(60,Math.min(H-14,holder0.y+my*sp*k));
+    // mates runs: push up + spread
+    mates.forEach((m,i)=>{
+      const tx2=[90,W-90,W/2][i]+Math.sin(now/700+i)*30;
+      m.vx=((tx2-m.x)*0.02)*k;m.vy=(-1.1)*k;
+      // avoid defenders slightly
+      defs.forEach(d=>{const dx=m.x-d.x,dy=m.y-d.y,dd=Math.hypot(dx,dy);if(dd<50){m.vx+=dx/dd*0.8*k;m.vy+=dy/dd*0.8*k;}});
+      m.x+=m.vx;m.y+=m.vy;m.y=Math.max(70,m.y);
+    });
+    // defenders: nearest presses
+    let press=defs[0],bd=1e9;defs.forEach(d=>{const dd=Math.hypot(d.x-holder0.x,d.y-holder0.y);if(dd<bd){bd=dd;press=d;}});
+    defs.forEach((d,i)=>{
+      let tx,ty;
+      if(d===press&&ball.holder){tx=holder0.x;ty=holder0.y;}
+      else if(!ball.holder){tx=ball.x;ty=ball.y;}
+      else{tx=[W/2-60,W/2+60,130,W-130][i];ty=[280,280,180,180][i];}
+      const dx=tx-d.x,dy=ty-d.y,dd=Math.max(1,Math.hypot(dx,dy));
+      d.x+=dx/dd*d.speed*k*0.9;d.y+=dy/dd*d.speed*k*0.9;
+    });
+    // gk tracks
+    const bxx=ball.holder==="me"?holder0.x:ball.x;
+    gk.x+=(Math.max(GX+10,Math.min(GX+GOAL_W-10,bxx))-gk.x)*0.09*k;
+    gk.y=46+Math.sin(now/500)*4;
+    // tackle
+    if(ball.holder==="me"){
+      ball.x=holder0.x;ball.y=holder0.y-15;
+      for(const d of defs){const dd=Math.hypot(d.x-holder0.x,d.y-holder0.y);if(dd<20){
+        const pSteal=0.012*(oc.def/80)*(holder0.burst>0?0.3:1);
+        if(Math.random()<pSteal*k*2){return end(false,"🛡️ قطعها المدافع!");}
+      }}
+      // gk rush if too close
+      if(holder0.y<110&&Math.hypot(gk.x-holder0.x,gk.y-holder0.y)<22&&Math.random()<0.02)return end(false,"🧤 أمسكها الحارس!");
+    }else{
+      ball.x+=ball.vx*k;ball.y+=ball.vy*k;ball.vx*=0.985;ball.vy*=0.985;
+      // pass reception
+      if(ball.passTo){const dd=Math.hypot(ball.x-ball.passTo.x,ball.y-ball.passTo.y);if(dd<20){
+        // switch holder to that mate (swap roles)
+        const old={x:holder0.x,y:holder0.y};
+        holder0.x=ball.passTo.x;holder0.y=ball.passTo.y;ball.holder="me";ball.passTo=null;ball.shot=false;
+        // old holder becomes mate
+        mates.push({x:old.x,y:old.y,vx:0,vy:0,team:0,r:10,rating:myAtt,speed:2.6});
+        mates.splice(mates.indexOf(ball._tmp||{}),0);ball._tmp=null;
+        beep(700,.07);
+      }}
+      // shot vs gk
+      if(ball.shot){
+        const dd=Math.hypot(ball.x-gk.x,ball.y-gk.y);
+        if(dd<20){
+          const saveP=Math.max(.15,Math.min(.75,(oc.def-70)*0.05+ (Math.hypot(ball.vx,ball.vy)>12?-0.1:0.1)));
+          if(Math.random()<saveP){return end(false,"🧤 تصدى الحارس!");}
+          // nutmeg continues
+        }
+        // defenders block
+        for(const d of defs){if(Math.hypot(ball.x-d.x,ball.y-d.y)<13&&Math.random()<0.3){return end(false,"🧱 بلوك دفاعي!");}}
+      }else{
+        // loose ball defenders intercept
+        for(const d of defs){if(Math.hypot(ball.x-d.x,ball.y-d.y)<14){return end(false,"🛡️ قطع التمريرة!");}}
+      }
+      // goal?
+      if(ball.y<=34){
+        if(ball.x>GX+4&&ball.x<GX+GOAL_W-4&&Math.abs(ball.vy)+Math.abs(ball.vx)>2){return end(true,"⚽⚽ GOAL!!");}
+        else if(ball.y<8||ball.x<0||ball.x>W)return end(false,"🥅 خارج المرمى");
+      }
+      if(ball.x<4||ball.x>W-4||ball.y>H-4)return end(false,"↩️ الكرة خرجت");
+      if(Math.hypot(ball.vx,ball.vy)<0.6&&!ball.holder)return end(false,"😅 ضاعت الهجمة");
+    }
+    draw();
+    raf=requestAnimationFrame(loop);
+  }
+  function draw(){
+    // pitch
+    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#16a34a");g.addColorStop(1,"#15803d");
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle="rgba(255,255,255,.7)";ctx.lineWidth=2;
+    // stripes
+    ctx.fillStyle="rgba(255,255,255,.06)";for(let i=0;i<8;i+=2)ctx.fillRect(0,i*H/8,W,H/8);
+    ctx.strokeRect(14,14,W-28,H-28);
+    ctx.beginPath();ctx.moveTo(14,H/2);ctx.lineTo(W-14,H/2);ctx.stroke();
+    ctx.beginPath();ctx.arc(W/2,H/2,60,0,7);ctx.stroke();
+    // box
+    ctx.strokeRect(W/2-110,14,220,110);ctx.strokeRect(W/2-60,14,120,45);
+    // goal
+    ctx.fillStyle="#fff";ctx.fillRect(GX-6,4,GOAL_W+12,10);
+    ctx.fillStyle="#0a1f14";ctx.font="11px sans-serif";ctx.textAlign="center";
+    // shadows + players
+    const all=[...mates,...defs,gk,holder0];
+    all.forEach(p=>{
+      ctx.beginPath();ctx.ellipse(p.x,p.y+9,9,3.5,"rgba(0,0,0,.3)",0,0,7);ctx.fill();
+    });
+    defs.forEach(d=>{ctx.fillStyle="#ef4444";ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,7);ctx.fill();ctx.lineWidth=2;ctx.strokeStyle="#7f1d1d";ctx.stroke();ctx.fillStyle="#fff";ctx.font="bold 9px sans-serif";ctx.fillText("D",d.x,d.y+3);});
+    mates.forEach(m=>{ctx.fillStyle="#38bdf8";ctx.beginPath();ctx.arc(m.x,m.y,m.r,0,7);ctx.fill();ctx.lineWidth=2;ctx.strokeStyle="#0c4a6e";ctx.stroke();ctx.fillStyle="#fff";ctx.fillText("•",m.x,m.y+3);});
+    // holder
+    ctx.fillStyle="#facc15";ctx.beginPath();ctx.arc(holder0.x,holder0.y,13,0,7);ctx.fill();ctx.lineWidth=3;ctx.strokeStyle="#fff";ctx.stroke();
+    ctx.fillStyle="#000";ctx.font="bold 10px sans-serif";ctx.fillText("أنت",holder0.x,holder0.y+3);
+    // gk
+    ctx.fillStyle="#a855f7";ctx.beginPath();ctx.arc(gk.x,gk.y,gk.r,0,7);ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke();ctx.fillStyle="#fff";ctx.fillText("GK",gk.x,gk.y+3);
+    // ball
+    ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(ball.x,ball.y,6,0,7);ctx.fill();ctx.strokeStyle="#000";ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle="#000";ctx.beginPath();ctx.arc(ball.x-1,ball.y-1,2,0,7);ctx.fill();
+    // aim arrow when holding
+    if(ball.holder==="me"){ctx.strokeStyle="rgba(255,255,255,.5)";ctx.setLineDash([6,5]);ctx.beginPath();ctx.moveTo(ball.x,ball.y);ctx.lineTo(W/2,30);ctx.stroke();ctx.setLineDash([]);}
+  }
+  function end(scored,txt){
+    if(done)return;done=true;cancelAnimationFrame(raf);
+    window.removeEventListener("keydown",kd);window.removeEventListener("keyup",ku);
+    msg.textContent=txt;msg.className="pill "+(scored?"green":"");
+    ctx.fillStyle=scored?"rgba(34,197,94,.35)":"rgba(0,0,0,.45)";ctx.fillRect(0,0,W,H);
+    ctx.fillStyle="#fff";ctx.font="bold 44px sans-serif";ctx.textAlign="center";
+    ctx.fillText(scored?"⚽ GOAL!":"✖",W/2,H/2-10);
+    ctx.font="bold 18px sans-serif";ctx.fillText(txt,W/2,H/2+30);
+    setTimeout(()=>onEnd(scored),1100);
+  }
+  draw();msg.textContent="راوغ ثم اسحب للتسديد!";raf=requestAnimationFrame(loop);
+}
+
+/* ---- الفريق ---- */
+function renderSquad(){
+  const a=squadAvg(S.squad);
+  el.innerHTML=`<div class="card"><div class="between"><h2>👥 فريقك — معدل ${a}</h2><span class="pill gold">${money(S.budget)}</span></div>
+  <div class="muted">التدريب: +1 تقييم للاعب مقابل 3M€ (مرة كل جولة) • التعب يؤثر على المحاكاة</div>
+  <div style="height:6px"></div><div id="list"></div></div>`;
+  const list=el.querySelector("#list");
+  const order={GK:0,DEF:1,MID:2,ATT:3};
+  const sorted=[...S.squad].sort((x,y)=>order[x.pos]-order[y.pos]||y.rating-x.rating);
+  list.innerHTML=sorted.map(p=>`<div class="prow"><div class="badge">${p.pos==="GK"?"🧤":p.pos==="DEF"?"🛡️":p.pos==="MID"?"🎯":"⚽"}</div>
+  <div style="flex:1"><div class="pname">${p.name} <span class="muted">${p.pos} • ${p.age} سنة • ⚽${p.goals}</span></div><div class="bar"><i style="width:${p.rating}%"></i></div></div>
+  <div class="rate">${p.rating}</div><button class="btn small ghost" data-tr="${p.id}" ${S.trainedRound===S.round?"disabled":""}>🏋️ 3M</button>
+  <button class="btn small red" data-sell="${p.id}">بيع</button></div>`).join("");
+  list.querySelectorAll("[data-tr]").forEach(b=>b.onclick=()=>{
+    const p=S.squad.find(x=>x.id===b.dataset.tr);if(S.budget<3||!p||p.rating>=93)return;
+    S.budget-=3;p.rating++;S.trainedRound=S.round;save();render();beep(800,.1);
+  });
+  list.querySelectorAll("[data-sell]").forEach(b=>b.onclick=()=>{
+    const i=S.squad.findIndex(x=>x.id===b.dataset.sell);if(i<0||S.squad.length<=14){alert("⚠️ تحتاج 14 لاعباً على الأقل!");return;}
+    const p=S.squad[i];if(!confirm(`بيع ${p.name} مقابل ${money(playerValue(p))}؟`))return;
+    S.budget+=playerValue(p);S.squad.splice(i,1);save();render();
+  });
+}
+/* ---- انتقالات ---- */
+function renderTransfers(){
+  el.innerHTML=`<div class="card between"><h2>💰 سوق الانتقالات</h2><span class="pill gold">${money(S.budget)}</span></div>
+  <div class="card"><h2>🎯 لاعبون متاحون (تتحدث كل جولة)</h2><div id="m"></div>
+  <div class="row" style="margin-top:8px"><button class="btn small ghost" id="ref" style="flex:1">🔄 كشاف جديد (5M€)</button></div></div>
+  <div class="card muted">💡 نصيحة Soccer Champs: بع اللاعبين الكبار (33+) واشترِ مواهب ✦ صغيرة — تتطور مع الانتصارات.</div>`;
+  const m=el.querySelector("#m");
+  m.innerHTML=S.market.map(p=>`<div class="prow"><div class="badge">${p.pos==="GK"?"🧤":p.pos==="DEF"?"🛡️":p.pos==="MID"?"🎯":"⚽"}</div>
+  <div style="flex:1"><div class="pname">${p.name} <span class="muted">${p.pos} • ${p.age}سنة</span></div><div class="muted">القيمة ${money(playerValue(p))} • راتب ${wage(p)}M/موسم</div></div>
+  <div class="rate">${p.rating}</div><button class="btn small" data-buy="${p.id}">شراء</button></div>`).join("")||"<p class='muted'>لا لاعبين — اضغط كشاف جديد</p>";
+  m.querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>{
+    const i=S.market.findIndex(x=>x.id===b.dataset.buy);const p=S.market[i];const v=playerValue(p);
+    if(S.budget<v){alert("💸 الميزانية لا تكفي!");return;}
+    if(S.squad.length>=24){alert("👥 الفريق ممتلئ (24)!");return;}
+    S.budget-=v;S.squad.push({...p,goals:0,tired:0});S.market.splice(i,1);save();render();goalSound();
+  });
+  el.querySelector("#ref").onclick=()=>{if(S.budget<5){alert("لا تملك 5M€");return;}S.budget-=5;S.market=genMarket(6,squadAvg(S.squad));save();render();};
+}
+/* ---- الدوري ---- */
+function renderLeague(){
+  const st=sortedTable();
+  const sc=Object.values(S.scorers).sort((a,b)=>b.g-a.g).slice(0,8);
+  const fx=S.fixtures.map((rd,i)=>({rd,i})).slice(Math.max(0,S.round-1),S.round+2);
+  const done=S.round>=S.fixtures.length;
+  el.innerHTML=`
+  <div class="card"><h2>🏆 جدول الدوري — الجولة ${Math.min(S.round+1,S.fixtures.length)}/${S.fixtures.length}</h2>
+  <table><tr><th>#</th><th>الفريق</th><th>ل</th><th>ف</th><th>ت</th><th>خ</th><th>نقاط</th></tr>
+  ${st.map(([id,t],i)=>`<tr class="${id===S.myClub?"me":""}"><td>${i+1} ${i===0?"👑":""}</td><td>${clubLine(id)}</td><td>${t.p}</td><td>${t.w}</td><td>${t.d}</td><td>${t.l}</td><td><b>${t.pts}</b></td></tr>`).join("")}</table></div>
+  <div class="card"><h2>⚽ الهدافون</h2>${sc.map(s=>`<div class="between" style="padding:4px 0"><span>${s.n}</span><b class="pill gold">${s.g} ⚽</b></div>`).join("")||"<p class='muted'>بعد أول جولة…</p>"}</div>
+  <div class="card"><h2>🗓️ المباريات</h2>${fx.map(({rd,i})=>`<h3>الجولة ${i+1} ${i<S.round?"✅":i===S.round?"▶️":"⏳"}</h3><div class="muted">${rd.map(m=>clubLine(m.h)+" vs "+clubLine(m.a)).join("<br>")}</div>`).join("")}</div>
+  ${S.cupLog.length?`<div class="card"><h2>🏆 سجل الكأس</h2><div class="muted">${S.cupLog.join("<br>")}</div></div>`:""}
+  ${S.trophies.length?`<div class="card"><h2>🎖️ خزانة الألقاب (${S.trophies.length})</h2><div style="font-size:30px">${S.trophies.map(t=>t.t).join(" ")}</div><div class="muted">${S.trophies.map(t=>`موسم ${t.s}: ${t.t}`).join("<br>")}</div></div>`:""}
+  ${done?`<div class="card" style="text-align:center" id="endC"></div>`:""}
+  <div class="card"><div class="row"><button class="btn red small" onclick="if(confirm('حذف المسيرة؟')){localStorage.removeItem('${K}');location.reload();}">🗑️ مسيرة جديدة</button></div></div>`;
+  if(done)renderSeasonEnd();
+}
+function renderSeasonEnd(){
+  if(S.finished&&S.offersAccepted!==undefined){renderOffers();return;}
+  const st=sortedTable();const champ=st[0][0];const myRank=st.findIndex(x=>x[0]===S.myClub)+1;
+  const isChamp=champ===S.myClub;
+  if(!S.finished){
+    S.finished=true;
+    if(isChamp){S.trophies.push({s:S.season,t:"🏆 الدوري",club:S.myClub});S.budget+=40;S.morale=98;S.fans+=20000;}
+    else{S.budget+=10+Math.max(0,8-myRank)*3;}
+    // offers
+    const better=CLUBS.filter(c=>teamRating(c)>squadAvg(S.squad)-2&&c.id!==S.myClub).sort(()=>Math.random()-.5).slice(0,2);
+    S.offers=better.map(c=>c.id);save();
+  }
+  const box=document.getElementById("endC");if(!box)return;
+  box.innerHTML=`<div style="font-size:56px">${isChamp?"🏆🎉":"📋"}</div><h2>${isChamp?"🎉 بطل الدوري!!":"نهاية الموسم — المركز "+myRank}</h2>
+  <p class="muted">البطل: ${clubLine(champ)} • مكافأة ${isChamp?"+40M€":"+"+(10+Math.max(0,8-myRank)*3)+"M€"}</p>
+  <div style="height:8px"></div><button class="btn gold" id="nx">➡️ ${S.offers.length?"عروض الأندية":"بدء الموسم "+(S.season+1)}</button>`;
+  box.querySelector("#nx").onclick=()=>{if(S.offers.length)renderOffers();else nextSeason(S.myClub);};
+}
+function renderOffers(){
+  const box=document.getElementById("endC");if(!box){return;}
+  box.innerHTML=`<div style="font-size:44px">📨</div><h2>عروض الأندية — سمعتك ${S.morale}%</h2>
+  <p class="muted">الأندية تريدك! البقاء يمنح +10M€ ولاء، والرحيل تحدٍ جديد بنفس لاعبيك الأساسيين.</p>
+  ${S.offers.map(id=>`<div class="prow"><div class="badge">${clubById(id).e}</div><div style="flex:1"><b>${clubById(id).name}</b><div class="muted">قوة ${teamRating(clubById(id))} • ميزانية ${money(clubById(id).budget)}</div></div><button class="btn small gold" data-go="${id}">قبول</button></div>`).join("")}
+  <div class="row" style="margin-top:8px"><button class="btn" style="flex:1" id="stay">🛡️ البقاء (+10M€)</button></div>`;
+  box.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>nextSeason(b.dataset.go));
+  const st=box.querySelector("#stay");if(st)st.onclick=()=>{S.budget+=10;nextSeason(S.myClub);};
+}
+function nextSeason(clubId){
+  const carry={season:S.season,budget:S.budget+squadAvg(S.squad),trophies:S.trophies,fans:S.fans,squad:S.squad};
+  S=newSeasonState(clubId,S.coach,carry);save();TAB="home";render();
+}
+
+/* ============ boot ============ */
+if(load()){TAB="home";}render();
+window.addEventListener("beforeunload",()=>{if(S)save();});
+</script>
+</body>
+</html>
